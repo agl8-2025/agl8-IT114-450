@@ -20,7 +20,19 @@ public class Problem2 extends BaseClass {
         // Step 3: Add code to solve the problem (add/commit as needed)
         double total = 0;
         // Start Solution Edits
+
+        //agl8, 8-5-25
+        // challenge 1 outline:
+        // 1. iterate through the array using for each loop
+        // 2. add numbers to total
+        
+        // challenge 2 outline:
+        // 1. format total to reflect two decimal places
+
+
         // Solve Challenge 1 here
+
+
         
       
         // Solve Challenge 2 here
@@ -34,7 +46,7 @@ public class Problem2 extends BaseClass {
     }
 
     public static void main(String[] args) {
-        final String ucid = "mt85"; // <-- change to your UCID
+        final String ucid = "agl8"; // <-- change to your UCID
         // no edits below this line
         printHeader(ucid, 2);
         sumValues(array1, 1);
