@@ -7,7 +7,7 @@ public class Problem1 extends BaseClass {
     private static int[] array4 = {9,9,8,8,7,7,6,6,5,5,4,4,3,3,2,2,1,1,0,0}; 
     private static void printOdds(int[] arr, int arrayNumber){
         // Only make edits between the designated "Start" and "End" comments
-        printArrayInfo(arr, arrayNumber);
+        printArrayInfo(arr, arrayNumber); 
 
         // Challenge: Print odd values only in a single line separated by commas
         // Step 1: sketch out plan using comments (include ucid and date)
@@ -16,13 +16,22 @@ public class Problem1 extends BaseClass {
         System.out.print("Output Array: ");
         // Start Solution Edits
         
+        //agl8, 8-5-25
+        //1. create flag and set it to true
+        //2. using for loop iterate through array
+        //3. check if odd
+        //4. if odd, go to flag
+        //5. first odd number will just print and then set flag to false
+        //6. for the next odds numbers it will print a comma and then the number
+
+
 
         // End Solution Edits
         System.out.println("");
         System.out.println("______________________________________");
     }
     public static void main(String[] args) {
-        final String ucid = "mt85"; // <-- change to your UCID
+        final String ucid = "agl8"; // <-- change to your UCID
         // no edits below this line
         printHeader(ucid, 1);
         printOdds(array1,1);
