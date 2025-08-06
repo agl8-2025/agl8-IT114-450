@@ -24,7 +24,19 @@ public class Problem1 extends BaseClass {
         //5. first odd number will just print and then set flag to false
         //6. for the next odds numbers it will print a comma and then the number
 
-
+        boolean first = true;  //1. create flag and set it to true
+        
+        for (int number : arr) {   //2. using for loop iterate through array
+            if (number % 2 != 0) {   //3. check if odd
+                if (first) {    //4. if odd, go to flag
+                    System.out.print(number);         //5. first odd number will just print 
+                    first = false;                    //and then set flag to false
+                }
+                else {
+                    System.out.print(", " + number);   //6. for the next odds numbers it will print a comma and then the number
+                }
+            }
+        }
 
         // End Solution Edits
         System.out.println("");
