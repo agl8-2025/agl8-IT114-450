@@ -18,6 +18,14 @@ public class Problem3 extends BaseClass {
         Object[] output = new Object[arr.length];
         // Start Solution Edits
         
+        //agl8, 8-6-25
+        // 1. iterate through array using index
+        // 2. check each values type
+        // 3. convert the value to its original data type
+        // 4. make the number positive
+        // 5. assigns the final number to the proper index slot
+
+        
 
         // End Solution Edits
         System.out.println("Output: ");
