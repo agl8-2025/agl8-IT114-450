@@ -44,8 +44,31 @@ public class Problem4 extends BaseClass {
             // 3. if not, use "Not enough characters"
             // 4. assign the result to the middle characters placeholder
 
+            String currentString = arr[i]; // 1. get the current string from the array
+            String cleanedString = currentString.replaceAll("[^a-zA-Z0-9 ]", ""); // 2. remove special characters from the string
+            String trimmedString = cleanedString.trim().replaceAll("\\s+", " "); // 3. remove extra spaces from the start, end, and middle
 
+            String[] words = trimmedString.toLowerCase().split(" "); // 4. convert the string to title case
+            StringBuilder titleCase = new StringBuilder();
 
+            for (String word : words) {
+                if (!word.isEmpty()) {
+                    char firstLetter = Character.toUpperCase(word.charAt(0));
+                    String restOfWord = word.substring(1);
+
+                    titleCase.append(firstLetter).append(restOfWord).append(" ");            
+                }
+            }
+
+            placeholderForModifiedPhrase = titleCase.toString().trim(); // 5. assign the final string to the placeholder
+
+            if(placeholderForModifiedPhrase.length() >= 3) {    //1. check if the final string is long enough
+                int middleIndex = placeholderForModifiedPhrase.length() / 2;   // 2. if it is, find the middle and get 3 characters
+                placeholderForMiddleCharacters = placeholderForModifiedPhrase.substring(middleIndex, middleIndex + 3); // 4. assign the result to the middle characters placeholder
+            }
+                else {
+                    placeholderForMiddleCharacters = "Not enough characters"; // 3. if not, use "Not enough characters"
+                }
              // End Solution Edits
             System.out.println(String.format("Index[%d] \"%s\" | Middle: \"%s\"",i, placeholderForModifiedPhrase, placeholderForMiddleCharacters));
         }
