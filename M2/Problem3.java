@@ -25,8 +25,33 @@ public class Problem3 extends BaseClass {
         // 4. make the number positive
         // 5. assigns the final number to the proper index slot
 
-        
+        for (int i = 0; i < arr.length; i++) { // 1. iterate through array using index
+            Object value = arr[i];
 
+            if (value instanceof Integer) {   // 2. check each values type
+                int num = (Integer) value;     // 3. convert the value to its original data type
+                output [i] = Math.abs(num);    // 4. make the number positive // 5. assigns the final number to the proper index slot
+            }
+            else if (value instanceof Double) {
+            double num = (Double) value;
+            output[i] = Math.abs(num);
+            } 
+            else if (value instanceof Float) {
+            float num = (Float) value;
+            output[i] = Math.abs(num);
+            } 
+            else if (value instanceof String) {
+            String str = (String) value;
+                if (str.contains(".")) {
+                double num = Double.parseDouble(str);
+                output[i] = Math.abs(num);
+                }   
+                else {
+                int num = Integer.parseInt(str);
+                output[i] = Math.abs(num);
+                }
+             }
+        }
         // End Solution Edits
         System.out.println("Output: ");
         printOutputWithType(output);
@@ -35,7 +60,7 @@ public class Problem3 extends BaseClass {
     }
 
     public static void main(String[] args) {
-        final String ucid = "mt85"; // <-- change to your UCID
+        final String ucid = "agl8"; // <-- change to your UCID
         // no edits below this line
         printHeader(ucid, 3);
         bePositive(array1, 1);
