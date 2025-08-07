@@ -31,6 +31,21 @@ public class Problem4 extends BaseClass {
         for(int i = 0; i <arr.length; i++){
             // Start Solution Edits
             
+            //agl8, 8-7-25
+            // 1. get the current string from the array
+            // 2. remove special characters from the string
+            // 3. remove extra spaces from the start, end, and middle
+            // 4. convert the string to title case
+            // 5. assign the final string to the placeholder
+
+            // extra credit outline:
+            // 1. check if the final string is long enough
+            // 2. if it is, find the middle and get 3 characters
+            // 3. if not, use "Not enough characters"
+            // 4. assign the result to the middle characters placeholder
+
+
+
              // End Solution Edits
             System.out.println(String.format("Index[%d] \"%s\" | Middle: \"%s\"",i, placeholderForModifiedPhrase, placeholderForMiddleCharacters));
         }
