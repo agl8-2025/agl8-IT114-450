@@ -1,6 +1,7 @@
 package M3;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,17 +37,41 @@ public class MadLibsGenerator extends BaseClass {
         List<String> lines = new ArrayList<>();
         // Start edits
 
-        // load a random story file
+        try {
+            File [] allStories = folder.listFiles();   // load a random story file
+            int randomNumber = (int) (Math.random() * allStories.length);
+            File chosenStory = allStories[randomNumber];
 
-        // parse the story lines
+            Scanner fileScanner = new Scanner(chosenStory);  // parse the story lines
+            while (fileScanner.hasNextLine()) {
+                lines.add(fileScanner.nextLine());
+            }
+            fileScanner.close();
 
-        // iterate through the lines
+            List<String> finallines = new ArrayList<>();
 
-        // prompt the user for each placeholder (note: there may be more than one
-        // placeholder in a line)
+            for (String oneLine : lines) {   // iterate through the lines
+                String modifiedLine = oneLine;
+                
+                while (modifiedLine.contains("<")) {                             // prompt the user for each placeholder (note: there may be more than one                                          
+                    int startOfPlaceholder = modifiedLine.indexOf("<");        // placeholder in a line)
+                    int endOfPlaceholder = modifiedLine.indexOf(">");
 
-        // apply the update to the same collection slot
+                    String placeholder = modifiedLine.substring(startOfPlaceholder, endOfPlaceholder + 1);
+                    String placeholderText = placeholder.substring(1, placeholder.length() - 1);
+                    String prompt = placeholderText.replace("_", " ");
 
+                    System.out.print("Provide a " + prompt + ": ");
+                    String userInput = scanner.nextLine();
+                    modifiedLine = modifiedLine.replaceFirst(placeholder, userInput);
+                }
+                finallines.add(modifiedLine);
+            }
+            lines = finallines;   // apply the update to the same collection slot
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Could not read story.");
+        }
         // End edits
         System.out.println("\nYour Completed Mad Libs Story:\n");
         StringBuilder finalStory = new StringBuilder();
