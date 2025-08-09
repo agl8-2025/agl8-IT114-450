@@ -127,6 +127,14 @@ public class Server {
         relay(sender, rev);
     }
 
+    //agl8- 8-9-25
+    public synchronized void handleFlip(ServerThread sender) {
+        String result = (Math.random() < 0.5) ? "Heads" : "Tails";
+        long clientId = sender.getClientId();
+        String message = String.format("User[%d] flipped a coin and got %s", clientId, result);
+        relay(null, message);
+    }
+
     protected synchronized void handleMessage(ServerThread sender, String text) {
         relay(sender, text);
     }

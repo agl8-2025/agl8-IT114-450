@@ -122,6 +122,13 @@ public class Client {
             sendToServer(String.join(",", commandData));
             wasCommand = true;
         }
+        //agl8, 8-9-25
+        //flip command
+        else if ("/flip".equalsIgnoreCase(text)){
+                String [] commandData = {Constants.COMMAND_TRIGGER, "flip"};
+                sendToServer(String.join(",",commandData));
+                wasCommand = true;
+        }
         return wasCommand;
     }
 

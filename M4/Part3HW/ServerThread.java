@@ -201,6 +201,12 @@ public class ServerThread extends Thread {
                         server.handleReverseText(this, relevantText);
                         wasCommand = true;
                         break;
+                    //agl8, 8-9-25
+                    //case flip
+                    case "flip":
+                    server.handleFlip(this);
+                    wasCommand = true;
+                    break;
                     // added more cases/breaks as needed for other commands
                     default:
                         break;
