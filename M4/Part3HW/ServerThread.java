@@ -208,11 +208,18 @@ public class ServerThread extends Thread {
                     wasCommand = true;
                     break;
                     // added more cases/breaks as needed for other commands
+
+                    //agl8, 8-9-25
+                    //catches pm
+                    case "pm":
+                    String pmDetails = String.join(",", Arrays.copyOfRange(commandData, 2, commandData.length));
+                    server.handlePrivateMessage(this, pmDetails);
+                    wasCommand = true;
+                    break;
                     default:
                         break;
                 }
             }
-
         }
         return wasCommand;
     }

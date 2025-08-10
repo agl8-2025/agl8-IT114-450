@@ -138,6 +138,35 @@ public class Server {
     protected synchronized void handleMessage(ServerThread sender, String text) {
         relay(sender, text);
     }
+
+    //agl8,8-9-25
+    //handles private message command
+    public synchronized void handlePrivateMessage(ServerThread sender, String payload) {
+        String[] parts = payload.split(",", 2);
+        if (parts.length < 2) {
+            sender.sendToClient(("Invalid PM format. Use /pm <target_id> <message>"));
+            return;
+        }
+        try {
+            long targetId = Long.parseLong(parts[0].trim());
+            String message = parts[1].trim();
+            String formattedMessage = String.format("PM from User[%d]: %s", sender.getClientId(), message);
+
+            ServerThread targetClient = connectedClients.get(targetId);
+            sender.sendToClient(formattedMessage);
+
+            if (targetClient != null) {
+                targetClient.sendToClient((formattedMessage));
+            }
+            else {
+                sender.sendToClient(String.format("User %d is not available", targetId));
+
+            }
+        }
+        catch (NumberFormatException e) { 
+            sender.sendToClient("Invalid user ID formatting");
+        }
+    }
     // end handle actions
 
     public static void main(String[] args) {

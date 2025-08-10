@@ -129,6 +129,18 @@ public class Client {
                 sendToServer(String.join(",",commandData));
                 wasCommand = true;
         }
+        //agl8, 8-9-25
+        //checks for pm and sends to server
+        else if (text.startsWith("/pm ")) {
+            String[] pmData = text.substring("/pm ".length()).split(" ", 2);
+            if (pmData.length == 2) {
+                String[] commandData = { Constants.COMMAND_TRIGGER, "pm", pmData[0], pmData[1] };
+                sendToServer(String.join(",", commandData));
+            } else {
+                System.out.println("Invalid format. Use /pm <target_id> <message>");
+            }
+            wasCommand = true;
+        }
         return wasCommand;
     }
 
