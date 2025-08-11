@@ -3,6 +3,9 @@ package M4.Part3HW;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
@@ -166,6 +169,23 @@ public class Server {
         catch (NumberFormatException e) { 
             sender.sendToClient("Invalid user ID formatting");
         }
+    }
+
+        //agl8,8-9-25
+        //handles shuffle 
+    public synchronized void handleShuffle(ServerThread sender, String text) {
+        List<Character> characters = new ArrayList<>();
+        for (char c : text.toCharArray()) {
+            characters.add(c);
+        }
+        Collections.shuffle(characters);
+
+        StringBuilder shuffledText = new StringBuilder();
+        for (char c : characters) {
+            shuffledText.append (c);
+        }
+        String finalMessage = String.format("Shuffled from User[%d]: %s", sender.getClientId(), shuffledText.toString());
+        relay(null, finalMessage);
     }
     // end handle actions
 

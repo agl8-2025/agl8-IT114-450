@@ -216,6 +216,15 @@ public class ServerThread extends Thread {
                     server.handlePrivateMessage(this, pmDetails);
                     wasCommand = true;
                     break;
+
+                    //agl8, 8-10-25
+                    //handles shuffle
+                    case "shuffle":
+                    String textToShuffle = String.join(",", Arrays.copyOfRange(commandData, 2, commandData.length));
+                    server.handleShuffle(this, textToShuffle);
+                    wasCommand = true;
+                    break;
+                   
                     default:
                         break;
                 }

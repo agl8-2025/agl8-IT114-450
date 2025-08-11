@@ -141,6 +141,14 @@ public class Client {
             }
             wasCommand = true;
         }
+        //agl8, 8-10-25
+        //checks for shuffle and send to server
+        else if (text.startsWith("/shuffle ")) {
+            String message = text.substring("/shuffle ".length());
+            String[] commandData = {Constants.COMMAND_TRIGGER, "shuffle", message};
+            sendToServer(String.join(",", commandData));
+            wasCommand = true;
+        }
         return wasCommand;
     }
 
