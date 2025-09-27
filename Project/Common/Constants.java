@@ -1,4 +1,4 @@
-package Project;
+package Project.Common;
 
 public abstract class Constants {
     final public static String COMMAND_TRIGGER = "/";
