@@ -132,22 +132,33 @@ public enum Server {
     /**
      * Attempts to move a client (ServerThread) between rooms
      * 
-     * @param name   the target room to join
-     * @param client the client moving
+     * @param roomName the target room to join
+     * @param client   the client moving
      * @throws RoomNotFoundException
      * 
      */
-    protected void joinRoom(String name, ServerThread client) throws RoomNotFoundException {
-        final String nameCheck = name.toLowerCase();
-        if (!rooms.containsKey(nameCheck)) {
-            throw new RoomNotFoundException(String.format("Room %s wasn't found", name));
-        }
+    protected void joinRoom(String roomName, ServerThread client) throws RoomNotFoundException {
+        String nameCheck = roomName.toLowerCase();
         Room currentRoom = client.getCurrentRoom();
+
+        // If already in this room, ignore the request (prevents crash)
+        if (currentRoom != null && currentRoom.getName().equalsIgnoreCase(nameCheck)) {
+            return;
+        }
+
+        // Grab destination room FIRST
+        Room next = rooms.get(nameCheck);
+        if (next == null) {
+            throw new RoomNotFoundException(roomName);
+        }
+
+        // Now remove from previous room
         if (currentRoom != null) {
-            info("Removing client from previous Room " + currentRoom.getName());
+            LoggerUtil.INSTANCE.info("Server: Removing client from previous Room " + currentRoom.getName());
             currentRoom.removeClient(client);
         }
-        Room next = rooms.get(nameCheck);
+
+        // Join destination room
         next.addClient(client);
     }
 

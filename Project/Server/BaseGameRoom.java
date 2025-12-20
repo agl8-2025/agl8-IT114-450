@@ -1,9 +1,12 @@
 package Project.Server;
 
+import java.util.List;
+
 import Project.Common.Constants;
 import Project.Common.LoggerUtil;
 import Project.Common.Phase;
 import Project.Common.TimedEvent;
+import Project.Common.TimerType;
 import Project.Exceptions.NotReadyException;
 import Project.Exceptions.PhaseMismatchException;
 import Project.Exceptions.PlayerNotFoundException;
@@ -81,7 +84,19 @@ public abstract class BaseGameRoom extends Room {
         }
         // do the base Room class logic
         super.addClient(client);
+        new Thread() {
+            @Override
+            public void run() {
+                // sleep 100
+                try {
+                    Thread.sleep(100);
         onClientAdded(client);
+                } catch (InterruptedException e) {
+                    LoggerUtil.INSTANCE.severe("Thread sleep interrupted", e);
+                }
+            }
+        }.start();
+
     }
 
     @Override
@@ -109,6 +124,7 @@ public abstract class BaseGameRoom extends Room {
         if (readyTimer != null) {
             readyTimer.cancel();
             readyTimer = null;
+            sendCurrentTime(TimerType.READY, -1);
         }
     }
 
@@ -126,7 +142,10 @@ public abstract class BaseGameRoom extends Room {
                 // callback to trigger when ready expires
                 checkReadyStatus();
             });
-            readyTimer.setTickCallback((time) -> System.out.println("Ready Timer: " + time));
+            readyTimer.setTickCallback((time) -> {
+                System.out.println("Ready Timer: " + time);
+                sendCurrentTime(TimerType.READY, time);
+            });
         }
     }
 
@@ -163,6 +182,46 @@ public abstract class BaseGameRoom extends Room {
     }
 
     // send/sync data to ServerThread(s)
+    protected void sendGameEvent(String str) {
+        sendGameEvent(str, null);
+    }
+
+    protected void sendGameEvent(String str, List<Long> targets) {
+        clientsInRoom.values().removeIf(spInRoom -> {
+            boolean canSend = false;
+            if (targets != null) {
+                if (targets.contains(spInRoom.getClientId())) {
+                    canSend = true;
+                }
+            } else {
+                canSend = true;
+            }
+            if (canSend) {
+                boolean failedToSend = !spInRoom.sendGameEvent(str);
+                if (failedToSend) {
+                    removeClient(spInRoom);
+                }
+                return failedToSend;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * Note: due to log output, this will get really spammy
+     * 
+     * @param timerType
+     * @param time      the remaining time or -1 to cancel
+     */
+    protected void sendCurrentTime(TimerType timerType, int time) {
+        clientsInRoom.values().removeIf(spInRoom -> {
+            boolean failedToSend = !spInRoom.sendCurrentTime(timerType, time);
+            if (failedToSend) {
+                removeClient(spInRoom);
+            }
+            return failedToSend;
+        });
+    }
 
     /**
      * Syncs the current phase to a single client
@@ -238,6 +297,7 @@ public abstract class BaseGameRoom extends Room {
             // early exit checks
             checkPlayerInRoom(sender);
             checkCurrentPhase(sender, Phase.READY);
+            checkNotAway(sender); // away users cannot ready up
 
             ServerThread sp = null;
             // option 1: simply just mark ready
@@ -294,6 +354,19 @@ public abstract class BaseGameRoom extends Room {
         if (!clientsInRoom.containsKey(client.getClientId())) {
             LoggerUtil.INSTANCE.severe("Player isn't in room");
             throw new PlayerNotFoundException("Player isn't in room");
+        }
+    }
+
+    /**
+     * Early exit (via exception throwing) if the user is marked as away
+     * 
+     * @param client
+     * @throws Exception
+     */
+    protected void checkNotAway(ServerThread client) throws Exception {
+        if (client.getUser().isAway()) {
+            client.sendMessage(Constants.DEFAULT_CLIENT_ID, "You are marked as away. Toggle away status to participate.");
+            throw new Exception("User is away");
         }
     }
     // end Logic Checks
