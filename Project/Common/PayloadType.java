@@ -1,5 +1,10 @@
 package Project.Common;
 
+/*
+ * UCID: agl8
+ * Date: 2025-12-19
+ * Summary: Adds missing payload types needed for Milestone 3: host, settings, away, elimination, and choice ack.
+ */
 public enum PayloadType {
        CLIENT_CONNECT, // client requesting to connect to server (passing of initialization data
                        // [name])
@@ -24,5 +29,17 @@ public enum PayloadType {
        SYNC_TURN, // quiet version of TURN, used to sync existing turn status of clients in a
                   // GameRoom
        RESET_TURN, // trigger to tell client to reset their local list turn status
-       PICK // a player chooses Rock, Paper, or Scissors
+       PICK, // a player chooses Rock, Paper, or Scissors
+       TIME, // syncs current time of various timers
+       POINTS, // syncs points data
+
+       GAME_SETTING,      // host sends settings changes
+       SYNC_GAME_SETTING, // server syncs settings to all
+       HOST,              // server tells clients who the host is (session creator)
+       SYNC_HOST,         // server syncs host again (on join/reset)
+       AWAY,              // client toggles away
+       SYNC_AWAY,         // server syncs away status to all
+       ELIMINATED,        // server tells elimination status
+       SYNC_ELIMINATED,   // server syncs elimination status to all
+       CHOICE             // server confirms a player's choice to that player (for cooldown UI)
 }
